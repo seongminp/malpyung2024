@@ -1,0 +1,8 @@
+adapter_name_or_path: models/kto-lora
+export_device: cpu
+export_dir: models/kto
+export_legacy_format: false
+export_size: 2
+finetuning_type: lora
+model_name_or_path: models/sft
+template: gemma
