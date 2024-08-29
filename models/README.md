@@ -12,3 +12,4 @@
 - `kto`: `kto-lora`를 `sft`에 merge한 모델. (추론 결과는 `kto-lora`와 동일함)
 - `distill-lora`: `kto` 모델에 self-distillation을 적용한 lora 어댑터.
 - `distill`: `distill-lora`를 `kto`에 merge한 모델 (추론 결과는 `distill-lora`와 동일함)
+    - 위에 언급된 [허깅페이스](https://huggingface.co/seongmin/malpyung2024)에 올라간 버전입니다.
