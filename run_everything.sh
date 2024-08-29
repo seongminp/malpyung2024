@@ -4,6 +4,7 @@
 export HF_TOKEN=""
 python3 -m venv ./env
 source ./env/bin/activte
+pip install -r requirements.txt
 cd llamafactory
 pip install .
 

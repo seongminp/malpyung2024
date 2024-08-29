@@ -1,0 +1,95 @@
+{
+    "train": {
+        "file_name": "../data/train.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+    "validation": {
+        "file_name": "../data/validation.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+    "test": {
+        "file_name": "../data/test.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+    "train_augmented": {
+        "file_name": "../data/train_augmented.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+    "kto": {
+        "file_name": "../data/kto.jsonl",
+        "columns": {
+            "prompt": "instruction",
+            "query": "input",
+            "response": "output",
+            "kto_tag": "kto_tag"
+        }
+    },
+    "distill1": {
+        "file_name": "../data/distill1.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+    "distill2": {
+        "file_name": "../data/distill2.jsonl",
+        "formatting": "sharegpt",
+        "columns": {
+            "messages": "conversation"
+        },
+        "tags": {
+            "role_tag": "role",
+            "content_tag": "content",
+            "user_tag": "user",
+            "assistant_tag": "assistant",
+            "system_tag": "system"
+        }
+    },
+}

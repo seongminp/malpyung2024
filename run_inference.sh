@@ -3,6 +3,7 @@
 # 환경설정 - 가상환경을 초기화하고 라이브러리를 설치합니다.
 python3 -m venv ./env
 source ./env/bin/activte
+pip install -r requirements.txt
 cd llamafactory
 pip install .
 

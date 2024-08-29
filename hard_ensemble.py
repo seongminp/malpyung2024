@@ -30,12 +30,16 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--cache", help="Precomputed values")
     args = parser.parse_args()
 
-    candidates = [
-    ]
+    candidates = list(
+        p for p in Path("submissions").glob("**/*.json") if "best" not in str(p)
+    )
 
     refs = [
+        "submissions/best1.json",
+        "submissions/best2.json",
+        "submissions/best3.json",
     ]
-   
+
     with open(args.cache) as rf:
         cache = json.load(rf)
 
@@ -45,8 +49,7 @@ if __name__ == "__main__":
             ref_data = [json.loads(line) for line in rf]
         ref_datas.append((Path(ref).stem, ref_data))
 
-
-    candidate_submissions = [] 
+    candidate_submissions = []
     for c in candidates:
         with open(c) as rf:
             d = json.load(rf)
@@ -61,31 +64,35 @@ if __name__ == "__main__":
 
             entry = {}
             for ri, (ref_name, ref_data) in enumerate(ref_datas):
-                ref = ref_data[i]['conversation'][-1]['content']
+                ref = ref_data[i]["conversation"][-1]["content"]
                 id = f"{ref_name}_{name}_{i}"
-                summary = d[i]['output']
+                summary = d[i]["output"]
                 if id in cache:
-                    bertscore = cache[id]['bertscore']
+                    bertscore = cache[id]["bertscore"]
                 else:
                     bertscore = calc_bertscore([ref], [summary])
 
                 cache[id] = {f"rouge": None, "bertscore": bertscore, "bleurt": None}
-                entry[f'r_{ref_name}'] = rouge
-                entry[f'bs_{ref_name}'] = bertscore
-                entry[f'bl_{ref_name}'] = bleurt
-            entry['summary'] = summary
-            entry['source'] = name
+                entry[f"r_{ref_name}"] = rouge
+                entry[f"bs_{ref_name}"] = bertscore
+                entry[f"bl_{ref_name}"] = bleurt
+            entry["summary"] = summary
+            entry["source"] = name
 
             collected.append(entry)
 
         # Rank with bertscore.
-        ranked = sorted(collected, key=lambda x: sum(x[f'bs_{rn}'] for rn, _ in ref_datas), reverse=True)
+        ranked = sorted(
+            collected,
+            key=lambda x: sum(x[f"bs_{rn}"] for rn, _ in ref_datas),
+            reverse=True,
+        )
 
         entry = copy.deepcopy(d[i])
-        entry['output'] = ranked[0]['summary']
+        entry["output"] = ranked[0]["summary"]
         output.append(entry)
 
-    with open(args.cache, 'w') as wf:
+    with open(args.cache, "w") as wf:
         json.dump(cache, wf, ensure_ascii=False, indent=4)
-    with open(args.output, 'w') as wf:
+    with open(args.output, "w") as wf:
         json.dump(output, wf, indent=4, ensure_ascii=False)
