@@ -1,6 +1,6 @@
 bf16: true
 cutoff_len: 8000
-dataset: sft-train
+dataset: train,validation,train_augmented
 ddp_timeout: 180000000
 do_train: true
 finetuning_type: lora

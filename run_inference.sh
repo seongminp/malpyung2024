@@ -7,7 +7,7 @@ cd llamafactory
 pip install .
 
 # 추론 2단계 - 요약을 생성합니다.
-python inference.py -m model -t train_data/test.jsonl -o submission.json
+python inference.py -m seongmin/malpyung2024 -t train_data/test.jsonl -o submission.json
 
 # 추론 3단계 - Hard emsemble을 수행합니다.
 python hard_enesmble.py -o merged.json -c cache.json
