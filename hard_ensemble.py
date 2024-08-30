@@ -27,7 +27,6 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-o", "--output", help="Output file")
-    parser.add_argument("-c", "--cache", help="Precomputed values")
     args = parser.parse_args()
 
     candidates = [
@@ -39,11 +38,8 @@ if __name__ == "__main__":
         "submissions/best2.json",
         "submissions/best3.json",
     ]
-
-    with open(args.cache) as rf:
-        cache = json.load(rf)
-
     ref_datas = []
+
     for ref in refs:
         with open(ref) as rf:
             ref_data = [json.loads(line) for line in rf]
@@ -67,12 +63,8 @@ if __name__ == "__main__":
                 ref = ref_data[i]["conversation"][-1]["content"]
                 id = f"{ref_name}_{name}_{i}"
                 summary = d[i]["output"]
-                if id in cache:
-                    bertscore = cache[id]["bertscore"]
-                else:
-                    bertscore = calc_bertscore([ref], [summary])
+                bertscore = calc_bertscore([ref], [summary])
 
-                cache[id] = {f"rouge": None, "bertscore": bertscore, "bleurt": None}
                 entry[f"r_{ref_name}"] = rouge
                 entry[f"bs_{ref_name}"] = bertscore
                 entry[f"bl_{ref_name}"] = bleurt
@@ -92,7 +84,5 @@ if __name__ == "__main__":
         entry["output"] = ranked[0]["summary"]
         output.append(entry)
 
-    with open(args.cache, "w") as wf:
-        json.dump(cache, wf, ensure_ascii=False, indent=4)
     with open(args.output, "w") as wf:
         json.dump(output, wf, indent=4, ensure_ascii=False)
