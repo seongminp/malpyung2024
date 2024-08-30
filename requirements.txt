@@ -1,1 +1,5 @@
 evaluate==0.4.2
+accelerate==0.32.0
+transformers==4.43.4
+torch==2.4.0
+
