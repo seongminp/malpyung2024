@@ -1,5 +1,5 @@
-import argparse
 import json
+import argparse
 
 
 def valid(text):
@@ -50,26 +50,20 @@ if __name__ == "__main__":
         alternative6 = candidate3[i]["output"]
         if valid(summary):
             alternative = summary
-            count += 1
         elif valid(alternative):
             alternative = alternative1
-            one += 1
         elif valid(alternative2):
             alternative = alternative2
-            two += 1
         elif valid(alternative3):
             alternative = alternative3
-            three += 1
         elif valid(alternative4):
             alternative = alternative4
-            four += 1
         elif valid(alternative5):
             alternative = alternative5
-            five += 1
         else:
             alternative = alternative6
 
         sample["output"] = alternative
 
-    with open(args.output, "w") as wf:
+    with open(args.output_file, "w") as wf:
         json.dump(data, wf, indent=4, ensure_ascii=False)

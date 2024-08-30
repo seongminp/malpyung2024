@@ -42,7 +42,9 @@ if __name__ == "__main__":
 
     for ref in refs:
         with open(ref) as rf:
-            ref_data = [json.loads(line) for line in rf]
+            ref_data = json.load(rf)
+            for rd in ref_data:
+                rd['conversation'] = [{'content': rd['output']}]
         ref_datas.append((Path(ref).stem, ref_data))
 
     candidate_submissions = []
@@ -65,9 +67,9 @@ if __name__ == "__main__":
                 summary = d[i]["output"]
                 bertscore = calc_bertscore([ref], [summary])
 
-                entry[f"r_{ref_name}"] = rouge
+                entry[f"r_{ref_name}"] = 0
                 entry[f"bs_{ref_name}"] = bertscore
-                entry[f"bl_{ref_name}"] = bleurt
+                entry[f"bl_{ref_name}"] = 0
             entry["summary"] = summary
             entry["source"] = name
 
