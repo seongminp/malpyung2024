@@ -40,7 +40,9 @@ def smooth(scalars: List[float]) -> List[float]:
 
     last = scalars[0]
     smoothed = []
-    weight = 1.8 * (1 / (1 + math.exp(-0.05 * len(scalars))) - 0.5)  # a sigmoid function
+    weight = 1.8 * (
+        1 / (1 + math.exp(-0.05 * len(scalars))) - 0.5
+    )  # a sigmoid function
     for next_val in scalars:
         smoothed_val = last * weight + (1 - weight) * next_val
         smoothed.append(smoothed_val)
@@ -75,7 +77,9 @@ def plot_loss(save_dictionary: os.PathLike, keys: List[str] = ["loss"]) -> None:
     Plots loss curves and saves the image.
     """
     plt.switch_backend("agg")
-    with open(os.path.join(save_dictionary, TRAINER_STATE_NAME), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(save_dictionary, TRAINER_STATE_NAME), "r", encoding="utf-8"
+    ) as f:
         data = json.load(f)
 
     for key in keys:
@@ -96,6 +100,8 @@ def plot_loss(save_dictionary: os.PathLike, keys: List[str] = ["loss"]) -> None:
         plt.xlabel("step")
         plt.ylabel(key)
         plt.legend()
-        figure_path = os.path.join(save_dictionary, "training_{}.png".format(key.replace("/", "_")))
+        figure_path = os.path.join(
+            save_dictionary, "training_{}.png".format(key.replace("/", "_"))
+        )
         plt.savefig(figure_path, format="png", dpi=100)
         print("Figure saved at:", figure_path)

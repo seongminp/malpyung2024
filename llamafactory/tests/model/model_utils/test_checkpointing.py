@@ -41,13 +41,17 @@ TRAIN_ARGS = {
 
 def test_checkpointing_enable():
     model = load_train_model(disable_gradient_checkpointing=False, **TRAIN_ARGS)
-    for module in filter(lambda m: hasattr(m, "gradient_checkpointing"), model.modules()):
+    for module in filter(
+        lambda m: hasattr(m, "gradient_checkpointing"), model.modules()
+    ):
         assert getattr(module, "gradient_checkpointing") is True
 
 
 def test_checkpointing_disable():
     model = load_train_model(disable_gradient_checkpointing=True, **TRAIN_ARGS)
-    for module in filter(lambda m: hasattr(m, "gradient_checkpointing"), model.modules()):
+    for module in filter(
+        lambda m: hasattr(m, "gradient_checkpointing"), model.modules()
+    ):
         assert getattr(module, "gradient_checkpointing") is False
 
 

@@ -72,4 +72,8 @@ def print_env() -> None:
     except Exception:
         pass
 
-    print("\n" + "\n".join(["- {}: {}".format(key, value) for key, value in info.items()]) + "\n")
+    print(
+        "\n"
+        + "\n".join(["- {}: {}".format(key, value) for key, value in info.items()])
+        + "\n"
+    )

@@ -24,7 +24,9 @@ if TYPE_CHECKING:
 logger = get_logger(__name__)
 
 
-def find_all_linear_modules(model: "PreTrainedModel", freeze_vision_tower: bool) -> List[str]:
+def find_all_linear_modules(
+    model: "PreTrainedModel", freeze_vision_tower: bool
+) -> List[str]:
     r"""
     Finds all available modules to apply lora or galore.
     """
@@ -45,14 +47,19 @@ def find_all_linear_modules(model: "PreTrainedModel", freeze_vision_tower: bool)
         if any(forbidden_module in name for forbidden_module in forbidden_modules):
             continue
 
-        if "Linear" in module.__class__.__name__ and "Embedding" not in module.__class__.__name__:
+        if (
+            "Linear" in module.__class__.__name__
+            and "Embedding" not in module.__class__.__name__
+        ):
             module_names.add(name.split(".")[-1])
 
     logger.info("Found linear modules: {}".format(",".join(module_names)))
     return list(module_names)
 
 
-def find_expanded_modules(model: "PreTrainedModel", target_modules: List[str], num_layer_trainable: int) -> List[str]:
+def find_expanded_modules(
+    model: "PreTrainedModel", target_modules: List[str], num_layer_trainable: int
+) -> List[str]:
     r"""
     Finds the modules in the expanded blocks to apply lora.
     """
@@ -62,7 +69,9 @@ def find_expanded_modules(model: "PreTrainedModel", target_modules: List[str], n
 
     if num_layers % num_layer_trainable != 0:
         raise ValueError(
-            "`num_layers` {} should be divisible by `num_layer_trainable` {}.".format(num_layers, num_layer_trainable)
+            "`num_layers` {} should be divisible by `num_layer_trainable` {}.".format(
+                num_layers, num_layer_trainable
+            )
         )
 
     stride = num_layers // num_layer_trainable
@@ -75,11 +84,17 @@ def find_expanded_modules(model: "PreTrainedModel", target_modules: List[str], n
         ):
             module_names.append(name)
 
-    logger.info("Apply lora to layers: {}".format(",".join(map(str, trainable_layer_ids))))
+    logger.info(
+        "Apply lora to layers: {}".format(",".join(map(str, trainable_layer_ids)))
+    )
     return module_names
 
 
-def register_autoclass(config: "PretrainedConfig", model: "PreTrainedModel", tokenizer: "PreTrainedTokenizer"):
+def register_autoclass(
+    config: "PretrainedConfig",
+    model: "PreTrainedModel",
+    tokenizer: "PreTrainedTokenizer",
+):
     if "AutoConfig" in getattr(config, "auto_map", {}):
         config.__class__.register_for_auto_class()
     if "AutoModelForCausalLM" in getattr(config, "auto_map", {}):

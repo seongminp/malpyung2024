@@ -43,9 +43,13 @@ class LlavaMultiModalProjectorForYiVL(torch.nn.Module):
         if config is None:
             return
 
-        self.linear_1 = torch.nn.Linear(config.vision_config.hidden_size, config.text_config.hidden_size, bias=True)
+        self.linear_1 = torch.nn.Linear(
+            config.vision_config.hidden_size, config.text_config.hidden_size, bias=True
+        )
         self.linear_2 = torch.nn.LayerNorm(config.text_config.hidden_size, bias=True)
-        self.linear_3 = torch.nn.Linear(config.text_config.hidden_size, config.text_config.hidden_size, bias=True)
+        self.linear_3 = torch.nn.Linear(
+            config.text_config.hidden_size, config.text_config.hidden_size, bias=True
+        )
         self.linear_4 = torch.nn.LayerNorm(config.text_config.hidden_size, bias=True)
         self.act = ACT2FN[config.projector_hidden_act]
 
@@ -63,14 +67,18 @@ class LlavaMultiModalProjectorForYiVL(torch.nn.Module):
             else:
                 target_dtype = self.linear_1.weight.dtype
 
-            transformers_logger.warning_once("The hidden states seems to be silently casted in float32.")
+            transformers_logger.warning_once(
+                "The hidden states seems to be silently casted in float32."
+            )
             hidden_states = hidden_states.to(target_dtype)
 
         return hidden_states
 
 
 class LlavaMultiModalProjectorForYiVLForVLLM(LlavaMultiModalProjectorForYiVL):
-    def __init__(self, vision_hidden_size: int, text_hidden_size: int, projector_hidden_act: str) -> None:
+    def __init__(
+        self, vision_hidden_size: int, text_hidden_size: int, projector_hidden_act: str
+    ) -> None:
         super().__init__(config=None)
 
         self.linear_1 = torch.nn.Linear(vision_hidden_size, text_hidden_size, bias=True)
@@ -81,23 +89,35 @@ class LlavaMultiModalProjectorForYiVLForVLLM(LlavaMultiModalProjectorForYiVL):
 
 
 def autocast_projector_dtype(
-    model: "PreTrainedModel", model_args: "ModelArguments", mm_projector_name: str = "multi_modal_projector"
+    model: "PreTrainedModel",
+    model_args: "ModelArguments",
+    mm_projector_name: str = "multi_modal_projector",
 ) -> None:
     def _mm_projector_forward_post_hook(
         module: "torch.nn.Module", args: Tuple["torch.Tensor"], output: "torch.Tensor"
     ) -> "torch.Tensor":
         return output.to(model_args.compute_dtype)
 
-    if hasattr(model, mm_projector_name) and getattr(model, "quantization_method", None):
-        logger.info("Casting multimodal projector outputs in {}.".format(model_args.compute_dtype))
+    if hasattr(model, mm_projector_name) and getattr(
+        model, "quantization_method", None
+    ):
+        logger.info(
+            "Casting multimodal projector outputs in {}.".format(
+                model_args.compute_dtype
+            )
+        )
         mm_projector: "torch.nn.Module" = getattr(model, mm_projector_name)
         mm_projector.register_forward_hook(_mm_projector_forward_post_hook)
 
 
 def configure_visual_model(config: "PretrainedConfig") -> None:
-    if getattr(config, "model_type", None) == "llava":  # required for ds zero3 and valuehead models
+    if (
+        getattr(config, "model_type", None) == "llava"
+    ):  # required for ds zero3 and valuehead models
         setattr(config, "hidden_size", getattr(config.text_config, "hidden_size", None))
 
     if getattr(config, "is_yi_vl_derived_model", None):
         logger.info("Detected Yi-VL model, applying projector patch.")
-        transformers.models.llava.modeling_llava.LlavaMultiModalProjector = LlavaMultiModalProjectorForYiVL
+        transformers.models.llava.modeling_llava.LlavaMultiModalProjector = (
+            LlavaMultiModalProjectorForYiVL
+        )

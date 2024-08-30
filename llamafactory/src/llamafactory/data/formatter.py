@@ -73,7 +73,11 @@ class StringFormatter(Formatter):
             elif isinstance(slot, (dict, set)):
                 elements.append(slot)
             else:
-                raise RuntimeError("Input must be string, set[str] or dict[str, str], got {}".format(type(slot)))
+                raise RuntimeError(
+                    "Input must be string, set[str] or dict[str, str], got {}".format(
+                        type(slot)
+                    )
+                )
 
         return elements
 
@@ -86,7 +90,9 @@ class FunctionFormatter(Formatter):
         elif self.tool_format == "glm4":
             self.slots = GLM4ToolUtils.get_function_slots() + self.slots
         else:
-            raise NotImplementedError("Tool format {} was not found.".format(self.tool_format))
+            raise NotImplementedError(
+                "Tool format {} was not found.".format(self.tool_format)
+            )
 
     def apply(self, **kwargs) -> SLOTS:
         content = kwargs.pop("content")
@@ -97,7 +103,12 @@ class FunctionFormatter(Formatter):
                 tool_calls = [tool_calls]
 
             for tool_call in tool_calls:
-                functions.append((tool_call["name"], json.dumps(tool_call["arguments"], ensure_ascii=False)))
+                functions.append(
+                    (
+                        tool_call["name"],
+                        json.dumps(tool_call["arguments"], ensure_ascii=False),
+                    )
+                )
 
         except json.JSONDecodeError:
             functions = []
@@ -106,12 +117,18 @@ class FunctionFormatter(Formatter):
         for name, arguments in functions:
             for slot in self.slots:
                 if isinstance(slot, str):
-                    slot = slot.replace("{{name}}", name).replace("{{arguments}}", arguments)
+                    slot = slot.replace("{{name}}", name).replace(
+                        "{{arguments}}", arguments
+                    )
                     elements.append(slot)
                 elif isinstance(slot, (dict, set)):
                     elements.append(slot)
                 else:
-                    raise RuntimeError("Input must be string, set[str] or dict[str, str], got {}".format(type(slot)))
+                    raise RuntimeError(
+                        "Input must be string, set[str] or dict[str, str], got {}".format(
+                            type(slot)
+                        )
+                    )
 
         return elements
 
@@ -126,7 +143,9 @@ class ToolFormatter(Formatter):
             self._tool_formatter = GLM4ToolUtils.tool_formatter
             self._tool_extractor = GLM4ToolUtils.tool_extractor
         else:
-            raise NotImplementedError("Tool format {} was not found.".format(self.tool_format))
+            raise NotImplementedError(
+                "Tool format {} was not found.".format(self.tool_format)
+            )
 
     def apply(self, **kwargs) -> SLOTS:
         content = kwargs.pop("content")

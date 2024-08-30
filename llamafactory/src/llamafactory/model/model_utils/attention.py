@@ -35,15 +35,25 @@ def configure_attn_implementation(
     if getattr(config, "model_type", None) == "gemma2" and is_trainable:
         if model_args.flash_attn == "auto" or model_args.flash_attn == "fa2":
             if is_flash_attn_2_available():
-                require_version("transformers>=4.42.4", "To fix: pip install transformers>=4.42.4")
-                require_version("flash_attn>=2.6.3", "To fix: pip install flash_attn>=2.6.3")
-                logger.warning("Gemma-2 should use flash attention 2, change `flash_attn` to fa2.")
+                require_version(
+                    "transformers>=4.42.4", "To fix: pip install transformers>=4.42.4"
+                )
+                require_version(
+                    "flash_attn>=2.6.3", "To fix: pip install flash_attn>=2.6.3"
+                )
+                logger.warning(
+                    "Gemma-2 should use flash attention 2, change `flash_attn` to fa2."
+                )
                 model_args.flash_attn = "fa2"
             else:
-                logger.warning("Gemma-2 should use eager attention, change `flash_attn` to disabled.")
+                logger.warning(
+                    "Gemma-2 should use eager attention, change `flash_attn` to disabled."
+                )
                 model_args.flash_attn = "disabled"
         elif model_args.flash_attn == "sdpa":
-            logger.warning("Gemma-2 should use soft-capping attention, while the SDPA attention does not support it.")
+            logger.warning(
+                "Gemma-2 should use soft-capping attention, while the SDPA attention does not support it."
+            )
 
     if model_args.flash_attn == "auto":
         return
@@ -64,16 +74,22 @@ def configure_attn_implementation(
 
         requested_attn_implementation = "flash_attention_2"
     else:
-        raise NotImplementedError("Unknown attention type: {}".format(model_args.flash_attn))
+        raise NotImplementedError(
+            "Unknown attention type: {}".format(model_args.flash_attn)
+        )
 
-    if getattr(config, "model_type", None) == "internlm2":  # special case for custom models
+    if (
+        getattr(config, "model_type", None) == "internlm2"
+    ):  # special case for custom models
         setattr(config, "attn_implementation", requested_attn_implementation)
     else:
         setattr(config, "_attn_implementation", requested_attn_implementation)
 
 
 def print_attn_implementation(config: "PretrainedConfig") -> None:
-    if getattr(config, "model_type", None) == "internlm2":  # special case for custom models
+    if (
+        getattr(config, "model_type", None) == "internlm2"
+    ):  # special case for custom models
         attn_implementation = getattr(config, "attn_implementation", None)
     else:
         attn_implementation = getattr(config, "_attn_implementation", None)

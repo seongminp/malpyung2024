@@ -30,9 +30,9 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--cache", help="Precomputed values")
     args = parser.parse_args()
 
-    candidates = list(
-        p for p in Path("submissions").glob("**/*.json") if "best" not in str(p)
-    )
+    candidates = [
+        "output.json",
+    ]
 
     refs = [
         "submissions/best1.json",

@@ -15,11 +15,21 @@
 from typing import TYPE_CHECKING, Any, Dict, Optional, TypedDict
 
 import torch
-from transformers import AutoConfig, AutoModelForCausalLM, AutoModelForVision2Seq, AutoProcessor, AutoTokenizer
+from transformers import (
+    AutoConfig,
+    AutoModelForCausalLM,
+    AutoModelForVision2Seq,
+    AutoProcessor,
+    AutoTokenizer,
+)
 from trl import AutoModelForCausalLMWithValueHead
 
 from ..extras.logging import get_logger
-from ..extras.misc import count_parameters, skip_check_imports, try_download_model_from_ms
+from ..extras.misc import (
+    count_parameters,
+    skip_check_imports,
+    try_download_model_from_ms,
+)
 from .adapter import init_adapter
 from .model_utils.misc import register_autoclass
 from .model_utils.mod import convert_pretrained_model_to_mod, load_mod_pretrained_model
@@ -29,7 +39,12 @@ from .patcher import patch_config, patch_model, patch_tokenizer, patch_valuehead
 
 
 if TYPE_CHECKING:
-    from transformers import PretrainedConfig, PreTrainedModel, PreTrainedTokenizer, ProcessorMixin
+    from transformers import (
+        PretrainedConfig,
+        PreTrainedModel,
+        PreTrainedTokenizer,
+        ProcessorMixin,
+    )
 
     from ..hparams import FinetuningArguments, ModelArguments
 
@@ -86,16 +101,22 @@ def load_tokenizer(model_args: "ModelArguments") -> "TokenizerModule":
             dict(additional_special_tokens=model_args.new_special_tokens),
             replace_additional_special_tokens=False,
         )
-        logger.info("Add {} to special tokens.".format(",".join(model_args.new_special_tokens)))
+        logger.info(
+            "Add {} to special tokens.".format(",".join(model_args.new_special_tokens))
+        )
         if num_added_tokens > 0 and not model_args.resize_vocab:
             model_args.resize_vocab = True
-            logger.warning("New tokens have been added, changed `resize_vocab` to True.")
+            logger.warning(
+                "New tokens have been added, changed `resize_vocab` to True."
+            )
 
     patch_tokenizer(tokenizer)
 
     if model_args.visual_inputs:
         try:
-            processor = AutoProcessor.from_pretrained(model_args.model_name_or_path, **init_kwargs)
+            processor = AutoProcessor.from_pretrained(
+                model_args.model_name_or_path, **init_kwargs
+            )
             setattr(processor, "tokenizer", tokenizer)
         except Exception:
             raise ValueError(
@@ -178,7 +199,10 @@ def load_model(
     if not is_trainable:
         model.requires_grad_(False)
         for param in model.parameters():
-            if param.data.dtype == torch.float32 and model_args.compute_dtype != torch.float32:
+            if (
+                param.data.dtype == torch.float32
+                and model_args.compute_dtype != torch.float32
+            ):
                 param.data = param.data.to(model_args.compute_dtype)
 
         model.eval()
@@ -187,8 +211,10 @@ def load_model(
 
     trainable_params, all_param = count_parameters(model)
     if is_trainable:
-        param_stats = "trainable params: {:,} || all params: {:,} || trainable%: {:.4f}".format(
-            trainable_params, all_param, 100 * trainable_params / all_param
+        param_stats = (
+            "trainable params: {:,} || all params: {:,} || trainable%: {:.4f}".format(
+                trainable_params, all_param, 100 * trainable_params / all_param
+            )
         )
     else:
         param_stats = "all params: {:,}".format(all_param)
