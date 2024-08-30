@@ -14,7 +14,7 @@ llamafactory-cli export ../train_configs/export-distill.yaml --dataset-dir=../da
 
 # 추론 2단계 - 요약을 생성합니다.
 cd ..
-python inference.py -m models/distill -t train_data/test.jsonl -o output.json
+python inference.py -m models/distill -t data/test.jsonl -o output.json
 
 # 추론 3단계 - Hard ensemble을 수행합니다.
 python hard_ensemble.py -o merged.json
