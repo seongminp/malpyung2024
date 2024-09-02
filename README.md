@@ -1,6 +1,14 @@
 # malpyung2024
 2024 인공지능 말평 &lt;일상 대화 요약 (나 유형)> 엘리팀
 
+# 개요
+
+**1. 대회 재현성 검증을 위해선 환경설정 후 `run_inference.sh`만 수행하시면 됩니다 (inference, 앙상블, 후처리 포함).**
+
+**2. 업로드 된 모델로 대화를 요약하려면 `inference.py`만 보시면 됩니다.**
+
+**3. 직접 훈련을 하시려면 `run_everything.sh`을 참고해주세요.** 
+
 
 ## 환경 설정
 1. Git 레포지토리를 clone 합니다.
@@ -41,12 +49,6 @@ python fix_degeneracy.py -i merged.json -o submission.json
 - `fix_degeneracy.py`: 길이 기반 요약 후처리 보정을 합니다.
 
 ## 레포지토리 각 파일 설명
-
-**1. 대회 재현성 검증을 위해선 `run_inference.sh`만 수행하시면 됩니다 (inference, 앙상블, 후처리 포함).**
-
-**2. 업로드 된 모델로 대화를 요약하고 싶으시면 `inference.py`만 보시면 됩니다.**
-
-**3. 직접 훈련을 하고 싶으시면 `run_everything.sh`을 참고해주세요.** 
 
 - `data` - 훈련, 추론에 필요한 데이터 디렉토리.
   
