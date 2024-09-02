@@ -41,3 +41,32 @@ python fix_degeneracy.py -i merged.json -o submission.json
 - `fix_degeneracy.py`: 길이 기반 요약 후처리 보정을 합니다.
 
 ## 레포지토리 각 파일 설명
+
+**대회 재현성 검증을 위해선 `run_inference.sh`만 수행하시면 됩니다.**
+
+**추후 모델 사용을 위해선 `inference.py`만 참고하시면 됩니다.**
+
+- `data` - 훈련, 추론에 필요한 데이터 디렉토리.
+  
+| dataset_info.json      	| LLaMA-Factory로 훈련을 위해 필요한 meatadata 	|
+|------------------------	|----------------------------------------------	|
+| distill1.jsonl         	| self-distillation 훈련용 데이터 1            	|
+| distill2.jsonl         	| self-distillation 훈련용 데이터 2            	|
+| kto.jsonl              	| KTO 훈련용 데이터                            	|
+| test.jsonl             	| Prompt 형식 적용된 테스트 데이터             	|
+| train.jsonl            	| Prompt 형식 적용된 훈련 데이터               	|
+| train_augmented.jsonl  	| 국립국어원 일상대화요약 2023 데이터          	|
+| validation.jsonl       	| Prompt 형식 적용된 dev 데이터                	|
+| 일상대화요약_test.json 	| 원본 대회 테스트 데이터                      	|
+
+
+- `llamafactory` - LLaMA-Factory 라이브러리 (훈련을 위한 dependency입니다).
+- `models` - 학습 완료된 모델이 저장되는 디렉토리입니다 (sft, kto, distilled 등).
+- `submissions` - 리더보드에 제출할 최종 JSON이 저장되는 디렉토리입니다.
+- `train_configs` - LLaMA-Factory에 필요한 훈련 configuration이 모여있습니다.
+- `fix_degeneracy.py` - 모델 최종 후처리를 수행하는 모듈입니다.
+- `hard_ensemble.py` - 여러 요약 결과를 앙상블하는 모듈입니다.
+- `inference.py` - 사전학습된 모델을 이용해서 요약을 생성합니다. 
+- `requirements.txt` - PIP dependency 목록입니다.
+- `run_everything.sh` - 훈련+추론 파이프라인을 전부 수행합니다.
+- `run_inference.sh` - 재현성 검증을 위해 추론 파이프라인을 전부 수행합니다. Self-distillation 다음 단계부터 수행합니다.
