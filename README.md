@@ -42,9 +42,11 @@ python fix_degeneracy.py -i merged.json -o submission.json
 
 ## 레포지토리 각 파일 설명
 
-**대회 재현성 검증을 위해선 `run_inference.sh`만 수행하시면 됩니다.**
+**1. 대회 재현성 검증을 위해선 `run_inference.sh`만 수행하시면 됩니다 (inference, 앙상블, 후처리 포함).**
 
-**추후 모델 사용을 위해선 `inference.py`만 참고하시면 됩니다.**
+**2. 업로드 된 모델로 대화를 요약하고 싶으시면 `inference.py`만 보시면 됩니다.**
+
+**3. 직접 훈련을 하고 싶으시면 `run_everything.sh`을 참고해주세요.** 
 
 - `data` - 훈련, 추론에 필요한 데이터 디렉토리.
   
