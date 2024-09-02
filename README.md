@@ -12,25 +12,25 @@
 
 ## 환경 설정
 1. Git 레포지토리를 clone 합니다.
-```
+```bash
 git clone https://github.com/seongminp/malpyung2024.git
 cd malpyung2024
 ```
 2. 가상환경을 초기화하고 필요 라이브러리를 설치합니다.
-```
+```bash
 python3 -m venv ./env
 source ./env/bin/activate
 pip install -r requirements.txt
 ```
 
 ## 모델 추론하기 (모델 재현성 검증)
-```
+```bash
 ./run_inference.sh
 ```
 스크립트 실행 후 *submission.json* 파일에 최종 요약이 출력됩니다.
 
 #### `run_inference.sh` 코드 설명
-```
+```bash
 #!/bin/bash
 
 # 추론 2단계 - 요약을 생성합니다.
