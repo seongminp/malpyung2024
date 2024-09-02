@@ -52,8 +52,9 @@ python fix_degeneracy.py -i merged.json -o submission.json
 
 - `data` - 훈련, 추론에 필요한 데이터 디렉토리.
   
-| dataset_info.json      	| LLaMA-Factory로 훈련을 위해 필요한 meatadata 	|
+| 데이터셋     	| 설명	|
 |------------------------	|----------------------------------------------	|
+| dataset_info.json      	| LLaMA-Factory로 훈련을 위해 필요한 meatadata 	|
 | distill1.jsonl         	| self-distillation 훈련용 데이터 1            	|
 | distill2.jsonl         	| self-distillation 훈련용 데이터 2            	|
 | kto.jsonl              	| KTO 훈련용 데이터                            	|
